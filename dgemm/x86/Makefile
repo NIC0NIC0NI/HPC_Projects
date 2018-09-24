@@ -1,24 +1,23 @@
-default:mm_cpu mm_knl
+default:mm_avx2 mm_avx512
 
 CC = icc
 CFLAGS = -O3 -ipo -qopenmp -std=c11 -align -finline-functions
 CLIBS = -qopenmp -ipo
 
-CPUCFLAGS = $(CFLAGS) -xHOST
+CPUCFLAGS = $(CFLAGS) -xAVX2
 KNLCFLAGS = $(CFLAGS) -xMIC-AVX512 -DMIC
 
 test.o:test.c mm.h
 	$(CC) $(CPUCFLAGS) -c test.c -o test.o
 
-mm_cpu.o:mm.c mm.h
-	$(CC) $(CPUCFLAGS) -c mm.c -o mm_cpu.o
+mm_avx2.o:mm.c mm.h
+	$(CC) $(CPUCFLAGS) -c mm.c -o mm_avx2.o
 
-mm_cpu:test.o mm_cpu.o
-	$(CC) $(CLIBS) test.o mm_cpu.o -o mm_cpu
+mm_avx2:test.o mm_avx2.o
+	$(CC) $(CLIBS) test.o mm_avx2.o -o mm_avx2
 
-mm_knl.o:mm.c mm.h
-	$(CC) $(KNLCFLAGS) -c mm.c -o mm_knl.o
+mm_avx512.o:mm.c mm.h
+	$(CC) $(KNLCFLAGS) -c mm.c -o mm_avx512.o
 
-mm_knl:test.o mm_knl.o
-	$(CC) $(CLIBS) test.o mm_knl.o -o mm_knl
-
+mm_avx512:test.o mm_avx512.o
+	$(CC) $(CLIBS) test.o mm_avx512.o -o mm_avx512

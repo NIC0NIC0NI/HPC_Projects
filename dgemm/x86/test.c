@@ -84,7 +84,8 @@ int main(int argc, args_t argv)
                         GET_TIME(t2);
 
                         t = TIME_DIFF(t1, t2);
-                        printf("Time:\t\t\t%lfs\n", t);
+                        printf("Time:         %lfs\n", t);
+                        printf("Performance:  %lfGflop/s\n", m*n*k*2*1e-9/t);
 
                         deallocate(c);
                     }
